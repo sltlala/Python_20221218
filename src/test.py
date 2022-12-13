@@ -8,7 +8,7 @@ import random
 #定义 jiexi()函数，用于解析得到的 html
 def jiexi(html, info, name):
 	print(html)
-	soup = BeautifulSoup(html, "lxml")
+	soup = BeautifulSoup(html, "html.parser")
 	text = soup.find_all("script", type="text/javascript")#[2].string
 	text = str(text).split('window.__SEARCH_RESULT__')[1]
 	text = text.split("</script>, ")[0]
@@ -94,7 +94,7 @@ if __name__ == '__main__': #主函数
 	# searchword = input('请输入你想查询的岗位：') #自行输入 30 个岗位名称搜索
 	# pages = int(input('请输入需要爬取的总页数：')) #在观察后输入数据页面爬取数据
 	searchword = '数据分析' # 自行输入 30 个岗位名称搜索
-	pages = 30 # 在观察后输入数据页面爬取数据
+	pages = 2 # 在观察后输入数据页面爬取数据
 	mainurl = 'https://www.51job.com' #设置 51jobs 首页的url
 	option = webdriver.ChromeOptions()
 	option.add_experimental_option('excludeSwitches', ['enable-automation'])
@@ -119,8 +119,8 @@ if __name__ == '__main__': #主函数
 	browser.switch_to.window(windows[-1])
 	info = []  # 空列表，传入 jiexi 函数用于存储每一条岗位的数据
 	for i in range(1, pages+1):
-		html = browser.find_element_by_xpath('/html/body/div[2]/div[3]/div/div[2]/div[4]/div[1]').text
-		# html = browser.page_source  # 获取网页的 html
+		# html = browser.find_element(by=By.XPATH, value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[1]').text
+		html = browser.page_source  # 获取网页的 html
 		# print('————————————————————————————————————————')
 		# print(html)
 		browser.implicitly_wait(random.randint(6, 12))
