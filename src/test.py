@@ -6,7 +6,7 @@ import pymysql
 # import lxml
 #定义 jiexi()函数，用于解析得到的 html
 def jiexi(html, info, name):
-	soup = BeautifulSoup(html, "html.parser")
+	soup = BeautifulSoup(html, "lxml")
 	text = soup.find_all("script", type="text/javascript")#[2].string
 	text = str(text).split('window.__SEARCH_RESULT__')[1]
 	text = text.split("</script>, ")[0]
