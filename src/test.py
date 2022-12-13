@@ -136,8 +136,7 @@ if __name__ == '__main__':  # 主函数
 		jiexi(html, info, searchword)
 		if i <= 5:
 			button2 = browser.find_element(By.XPATH,
-			                               value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[{}]/a'.format(
-				                               i + 7))
+			                               value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[{}]/a'.format(i + 7))
 		else:
 			button2 = browser.find_element(By.XPATH,
 			                               value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[13]/a')  # 寻找下一页的按钮
