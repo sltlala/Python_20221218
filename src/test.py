@@ -3,9 +3,11 @@ from selenium.webdriver.common.by import By
 import time
 from bs4 import BeautifulSoup
 import pymysql
+import random
 # import lxml
 #定义 jiexi()函数，用于解析得到的 html
 def jiexi(html, info, name):
+	print(html)
 	soup = BeautifulSoup(html, "lxml")
 	text = soup.find_all("script", type="text/javascript")#[2].string
 	text = str(text).split('window.__SEARCH_RESULT__')[1]
@@ -107,27 +109,28 @@ if __name__ == '__main__': #主函数
 		"""
 })
 	browser.get(mainurl)  # 打开 51jobs 首页
-	browser.implicitly_wait(10)
+	browser.implicitly_wait(random.randint(6, 12))
 	browser.find_element(by=By.XPATH, value='/html/body/div[3]/div/div[1]/div/div/p[1]/input').send_keys(searchword) #在搜索框输入要查询的岗位
-	browser.implicitly_wait(10)
+	browser.implicitly_wait(random.randint(6, 12))
 	button1 = browser.find_element(by=By.XPATH, value='/html/body/div[3]/div/div[1]/div/button')  # 寻找搜索按钮
 	button1.click()  # 点击搜索按钮
-	time.sleep(10)
+	time.sleep(random.randint(6, 12))
 	windows = browser.window_handles
 	browser.switch_to.window(windows[-1])
 	info = []  # 空列表，传入 jiexi 函数用于存储每一条岗位的数据
 	for i in range(1, pages+1):
-		html = browser.page_source  # 获取网页的 html
+		html = browser.find_element_by_xpath('/html/body/div[2]/div[3]/div/div[2]/div[4]/div[1]').text
+		# html = browser.page_source  # 获取网页的 html
 		# print('————————————————————————————————————————')
 		# print(html)
-		browser.implicitly_wait(10)
+		browser.implicitly_wait(random.randint(6, 12))
 		jiexi(html, info, searchword)
 		if i <= 5:
 			button2 = browser.find_element(By.XPATH, value= '/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[{}]/a'.format(i+7))
 		else:
 			button2 = browser.find_element(By.XPATH, value= '/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[13]/a') #寻找下一页的按钮
 		button2.click()  # 翻到下一页
-		time.sleep(10)
+		time.sleep(random.randint(6, 12))
 		windows = browser.window_handles
 		browser.switch_to.window(windows[-1])
 	save(info)
