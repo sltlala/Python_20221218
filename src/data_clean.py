@@ -127,7 +127,7 @@ def save(data):
 		jobwelf = each_data[8]
 		present_job = each_data[9]
 		sql = "insert into after_clean(当前爬取岗位,岗位,更新时间,公司名称,公司类型,公司规模,\
-		工作地点,薪资,工作要求,工作待遇)values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+		工作地点,薪资,工作要求,工资待遇)values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 		cursor.execute(sql, [present_job, job_name, updatedate, company_name, companyind_text, companysize_text,
 		                     workarea_text, providesalary_text, attribute_text, jobwelf])
 		db.commit()
@@ -146,5 +146,9 @@ if __name__ == '__main__':
 	data3 = salary(data2)
 	# print(data2[:10])
 	data4 = job_attribute_text(data3)
-	# print(data4[:10])
-	save(data4)
+
+	data5 = list(set(tuple(i) for i in data4))  # 转化为元组做主键
+	# NewList = [list(t) for t in set(tuple(i) for i in List)]
+	# data5.sort(key=data4.index)
+	# print(data5[:10], '\n', type(data5))
+	save(data5)
