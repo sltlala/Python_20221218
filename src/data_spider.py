@@ -129,10 +129,9 @@ if __name__ == '__main__':  # 主函数
 	info = []  # 空列表，传入 jiexi 函数用于存储每一条岗位的数据
 	for i in range(1, pages + 1):
 		# html = browser.find_element(by=By.XPATH, value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[1]').text
-		browser.refresh()
-		browser.implicitly_wait(random.randint(8, 15))
+		# browser.refresh()
 		html = browser.page_source  # 获取网页的 html
-
+		browser.implicitly_wait(random.randint(8, 15))
 		jiexi(html, info, searchword)
 		if i <= 5:
 			button2 = browser.find_element(By.XPATH,
@@ -144,5 +143,7 @@ if __name__ == '__main__':  # 主函数
 		time.sleep(random.randint(8, 15))
 		windows = browser.window_handles
 		browser.switch_to.window(windows[-1])
+		browser.get(browser.current_url)
+		time.sleep(4)
 	save(info)
 	print('{}岗位的{}页数据已经爬取成功！请进入 Mysql 数据库检查！'.format(searchword, pages))
