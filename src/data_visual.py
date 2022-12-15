@@ -172,6 +172,7 @@ def gangweishuliang_heatmap():  # 主函数调用的 gangweishuliang_heatmap()�
 			if each[0] == names[each_name]:
 				final[each_name] += 1
 				break
+
 	'''
 	热力图的绘制要利用百度的 pyecharts 库，需要提前安装
 	#pip install echarts-countries-pypkg #世界地图包括中国地图大约 1.9M
@@ -180,6 +181,7 @@ def gangweishuliang_heatmap():  # 主函数调用的 gangweishuliang_heatmap()�
 	#pip install echarts-china-counties-pypkg #中国县镇地图 4.1M
 	#pip install echarts-china-misc-pypkg #中国区域划分
 	'''
+
 	# 此处需要将资料中给出的 city_coordinates.json 文件放在 python 目录下，获取各个城市的经纬度信息
 	aa = [list(z) for z in zip(names, final)]
 	geo = (
