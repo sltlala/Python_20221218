@@ -13,7 +13,7 @@ db = pymysql.connect(
 
 def pipei():
 	cursor = db.cursor()  # 获取操作游标
-	cursor.execute("select * from jobs")  # 从 jobs 表中查询所有内容并保存
+	cursor.execute("select * from jobs2")  # 从 jobs 表中查询所有内容并保存
 	results = cursor.fetchall()  # 接受全部的返回结果
 	after_pipei = []  # 建立一个空列表，用来存储匹配后数据
 	for each_result in results:

@@ -11,7 +11,7 @@ import pandas as pd
 from pyecharts.charts import Sankey
 import jieba
 from imageio import imread
-from wordcloud import WordCloud
+# from wordcloud import WordCloud
 
 # 连接数据库
 db = pymysql.connect(
@@ -225,7 +225,9 @@ def salary_xueli_boxplot():  # 主函数调用的salary_xueli_boxplot()函数
 	for each in xueli_after_quchong:
 		for i in range(len(xueli)):
 			if xueli[i] == each:
+
 				final[xueli_after_quchong.index(each)].append(float(salary[i]))
+
 	# print(final)
 	# 画图
 	plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
@@ -370,5 +372,5 @@ if __name__ == '__main__':
 	gangweishuliang_heatmap()
 	salary_xueli_boxplot()
 	post_salary()
-	wordcloud_welfare()
+	# wordcloud_welfare()
 	db.close()
