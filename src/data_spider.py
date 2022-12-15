@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import pymysql
 import random
 
-
 # import lxml
 # 定义 jiexi()函数，用于解析得到的 html
 def jiexi(html, info, name):

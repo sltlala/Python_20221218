@@ -39,8 +39,10 @@ def pipei():
 
 		elif each_result[-1][:-2] in each_result[0] and each_result[-1][-2:] in each_result[0]:
 			after_pipei.append(each_result)
-	# 剩余岗位需 要两个关键词都存在岗位名称中，例如包含“数据”或“分析”在以“数据分析”
-	# 为关键词搜索的岗位名称种，我们就认为匹配成功。
+
+		# 剩余岗位需要两个关键词都存在岗位名称中，例如包含“数据”或“分析”在以“数据分析”
+		# 为关键词搜索的岗位名称种，我们就认为匹配成功。
+
 	cursor.close()  # 关闭游标
 	return after_pipei  # 返回匹配后的列表
 
@@ -58,8 +60,11 @@ def split_city(data):
 def salary_1(data):  # 清除工作薪资内容的“·xx 薪”
 	after_salary_1 = []
 	for each_data in data:
-		if '千' in each_data[6] and each_data[6][-1] == '万':
-			each_data[6] = str((float(each_data[6].split('千')[0]) / 10)) + each_data[6].split('千')[1]
+		if '千' in each_data[6] and '万' in each_data[6]:
+			if '千' in each_data[6]:
+				each_data[6] = str((float(each_data[6].split('千')[0]) / 10)) + each_data[6].split('千')[1]
+			if '及以下' in each_data[6]:
+				each_data[6] ='30.0千/月'
 		if '薪' in each_data[6]:
 			each_data[6] = each_data[6].split('·')[0]
 		after_salary_1.append(each_data)
