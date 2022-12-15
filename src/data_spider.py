@@ -87,7 +87,7 @@ def save(data):
 		attribute_text = each_data[8]  # 工作要求
 		jobwelf = each_data[9]  # 工作待遇
 		# 创建 sql 语句
-		sql = "insert into jobs2(当前爬取岗位, 岗位, 更新时间,公司名称,公司类型,公司规模, \
+		sql = "insert into jobs(当前爬取岗位, 岗位, 更新时间,公司名称,公司类型,公司规模, \
 		工作地点,薪资,工作要求,工作待遇) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 		# 执行 sql 语句
 		cursor.execute(sql, [present_job, job_name, updatedate, company_name, companyind_text, companysize_text,
@@ -100,7 +100,7 @@ def save(data):
 if __name__ == '__main__':  # 主函数
 	# searchword = input('请输入你想查询的岗位：') # 自行输入 30 个岗位名称搜索
 	# pages = int(input('请输入需要爬取的总页数：')) # 在观察后输入数据页面爬取数据
-	searchword = '数据分析'  # 自行输入 30 个岗位名称搜索
+	searchword = '产品经理'  # 自行输入 30 个岗位名称搜索
 	pages = 30  # 在观察后输入数据页面爬取数据
 	mainurl = 'https://www.51job.com'  # 设置 51jobs 首页的url
 	option = webdriver.ChromeOptions()
