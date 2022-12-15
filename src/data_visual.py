@@ -336,7 +336,7 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 	# 统计词频的字典
 	word_freq = dict()
 	# 装载停用词,此处需将资料中给出的 hit_stopwords.txt 文件放到本代码所在路径下
-	with open("D:/Desktop/python 数据爬虫及可视化实验/实验所需输入文件/stopwords.txt", "r", encoding='utf-8') as f1:  # 读取我们的待处理本文
+	with open("D:/Python_Program/python数据爬虫及可视化实验/实验所需输入文件/stopwords.txt", "r", encoding='utf-8') as f1:  # 读取我们的待处理本文
 		txt1 = f1.readlines()
 	stoplist = []
 	for line in txt1:
@@ -349,7 +349,7 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 			else:
 				word_freq[w] = word_freq[w] + 1
 	# 指定背景模式图片
-	back_color = imread("D:/Desktop/python 数据爬虫及可视化实验/实验所需输入文件/地大.png")
+	back_color = imread("D:/Python_Program/python数据爬虫及可视化实验/实验所需输入文件/地大.png")
 	# 构造 WordCloud 对象
 	wc = WordCloud(background_color='white', max_words=100, collocations=False, width=1000, height=1000,
 	               font_path='simhei.ttf', mask=back_color)
@@ -364,7 +364,7 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 
 # 创建主函数
 if __name__ == '__main__':
-	gangweishuliang_hist()
+	# gangweishuliang_hist()
 	xueli_pie()
 	company_size()
 	gangweishuliang_heatmap()
