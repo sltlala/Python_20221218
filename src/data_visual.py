@@ -64,6 +64,7 @@ def gangweishuliang_hist():  # 主函数调用的 gangweishuliang_hist()函数
 	ax.set_title("岗位数量柱状图", fontsize=15)  # 为柱状图命名并设置字体大小
 	for x, y in enumerate(counts):
 		plt.text(x, y + 5, '%s' % y, ha='center')  # 为每根柱子加上数值
+	plt.savefig(r'./岗位数量柱状图.png')
 	plt.show()  # 展示图片
 	cursor.close()  # 关闭操作游标
 
@@ -99,6 +100,7 @@ def xueli_pie():  # 主函数调用的 xueli_pie()函数
 	plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 	plt.pie(x=counts, explode=a, labels=after_quchong_xueli, autopct='%1.2f%%')  # x 为基本数据，labels 为给各个部分添加标签的列表，autopct 显示各部分比例，本例中调用%1.2f%%。
 	plt.title('学历要求饼状图')  # 为饼图添加标题
+	plt.savefig(r'./学历要求饼状图.png')
 	plt.show()  # 展示图片
 	cursor.close()  # 关闭操作游标
 
@@ -147,6 +149,7 @@ def company_size():  # 主函数调用的 company_size()函数
 	plt.title('公司规模')  # 图形名称
 	for y, x in enumerate(count_each_size):
 		plt.text(x + 0.1, y, "%s" % round(x, 1), va='center')  # 为每个柱子加上对应的数值，其中 round(x,1)是将 x 值四舍五入到一个小数位
+	plt.savefig(r'./公司规模横向直方图.png')
 	plt.show()  # 展示图形
 	cursor.close()  # 关闭操作游标
 
@@ -234,6 +237,7 @@ def salary_xueli_boxplot():  # 主函数调用的salary_xueli_boxplot()函数
 	plt.boxplot(final, labels=xueli_after_quchong)
 	plt.title('学历-薪资水平箱线图', fontsize=15)
 	plt.ylabel('薪资(单位：千/月)', fontsize=12)
+	plt.savefig(r'./学历-薪资水平箱线图.png')
 	plt.show()  # 展示图形
 	cursor.close()  # 关闭操作游标
 
@@ -360,6 +364,7 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 	wc.to_file('WordCloud.png')
 	plt.imshow(wc)
 	plt.axis("off")
+	plt.savefig(r'./工作待遇词云图.png')
 	plt.show()
 
 
