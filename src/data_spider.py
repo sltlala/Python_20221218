@@ -100,7 +100,7 @@ def save(data):
 if __name__ == '__main__':  # 主函数
 	# searchword = input('请输入你想查询的岗位：') # 自行输入 30 个岗位名称搜索
 	# pages = int(input('请输入需要爬取的总页数：')) # 在观察后输入数据页面爬取数据
-	searchword = '渠道管理'  # 自行输入 30 个岗位名称搜索
+	searchword = '产品运营'  # 自行输入 30 个岗位名称搜索
 	pages = 30  # 在观察后输入数据页面爬取数据
 	mainurl = 'https://www.51job.com'  # 设置 51jobs 首页的url
 	option = webdriver.ChromeOptions()

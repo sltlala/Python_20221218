@@ -13,7 +13,7 @@ db = pymysql.connect(
 
 def pipei():
 	cursor = db.cursor()  # 获取操作游标
-	cursor.execute("select * from jobs2")  # 从 jobs 表中查询所有内容并保存
+	cursor.execute("select * from jobs")  # 从 jobs 表中查询所有内容并保存
 	results = cursor.fetchall()  # 接受全部的返回结果
 	after_pipei = []  # 建立一个空列表，用来存储匹配后数据
 	for each_result in results:
@@ -132,7 +132,7 @@ def save(data):
 		jobwelf = each_data[8]
 		present_job = each_data[9]
 		sql = "insert into after_clean(当前爬取岗位,岗位,更新时间,公司名称,公司类型,公司规模,\
-		工作地点,薪资,工作要求,工资待遇)values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+		工作地点,薪资,工作要求,工作待遇)values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
 		cursor.execute(sql, [present_job, job_name, updatedate, company_name, companyind_text, companysize_text,
 		                     workarea_text, providesalary_text, attribute_text, jobwelf])
 		db.commit()
