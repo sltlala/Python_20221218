@@ -100,7 +100,7 @@ def save(data):
 if __name__ == '__main__':  # 主函数
 	# searchword = input('请输入你想查询的岗位：') # 自行输入 30 个岗位名称搜索
 	# pages = int(input('请输入需要爬取的总页数：')) # 在观察后输入数据页面爬取数据
-	searchword = '安卓开发'  # 自行输入 30 个岗位名称搜索
+	searchword = '渠道管理'  # 自行输入 30 个岗位名称搜索
 	pages = 30  # 在观察后输入数据页面爬取数据
 	mainurl = 'https://www.51job.com'  # 设置 51jobs 首页的url
 	option = webdriver.ChromeOptions()
@@ -116,13 +116,13 @@ if __name__ == '__main__':  # 主函数
 							"""
 	                         })
 	browser.get(mainurl)  # 打开 51jobs 首页
-	browser.implicitly_wait(random.randint(6, 12))
+	browser.implicitly_wait(random.randint(6, 15))
 	browser.find_element(by=By.XPATH, value='/html/body/div[3]/div/div[1]/div/div/p[1]/input').send_keys(
 		searchword)  # 在搜索框输入要查询的岗位
-	browser.implicitly_wait(random.randint(6, 12))
+	browser.implicitly_wait(random.randint(6, 15))
 	button1 = browser.find_element(by=By.XPATH, value='/html/body/div[3]/div/div[1]/div/button')  # 寻找搜索按钮
 	button1.click()  # 点击搜索按钮
-	time.sleep(random.randint(6, 12))
+	time.sleep(random.randint(8, 15))
 	windows = browser.window_handles
 	browser.switch_to.window(windows[-1])
 	info = []  # 空列表，传入 jiexi 函数用于存储每一条岗位的数据
@@ -130,7 +130,7 @@ if __name__ == '__main__':  # 主函数
 		# html = browser.find_element(by=By.XPATH, value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[1]').text
 		# browser.refresh()
 		html = browser.page_source  # 获取网页的 html
-		browser.implicitly_wait(random.randint(6, 12))
+		browser.implicitly_wait(random.randint(8, 14))
 		jiexi(html, info, searchword)
 		if i <= 5:
 			button2 = browser.find_element(By.XPATH,
@@ -139,10 +139,10 @@ if __name__ == '__main__':  # 主函数
 			button2 = browser.find_element(By.XPATH,
 			                               value='/html/body/div[2]/div[3]/div/div[2]/div[4]/div[2]/div/div/div/ul/li[13]/a')  # 寻找下一页的按钮
 		button2.click()  # 翻到下一页
-		time.sleep(random.randint(6, 12))
+		time.sleep(10)
 		windows = browser.window_handles
 		browser.switch_to.window(windows[-1])
 		browser.get(browser.current_url)
-		time.sleep(4)
+		time.sleep(6)
 	save(info)
 	print('{}岗位的{}页数据已经爬取成功！请进入 Mysql 数据库检查！'.format(searchword, pages))

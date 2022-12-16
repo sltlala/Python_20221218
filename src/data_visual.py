@@ -11,7 +11,7 @@ import pandas as pd
 from pyecharts.charts import Sankey
 import jieba
 from imageio import imread
-# from wordcloud import WordCloud
+from wordcloud import WordCloud
 
 # 连接数据库
 db = pymysql.connect(
@@ -97,8 +97,7 @@ def xueli_pie():  # 主函数调用的 xueli_pie()函数
 			a[i] = 0.2  # 让占比小于 5%的城市突出
 	plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 	plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-	plt.pie(x=counts, explode=a, labels=after_quchong_xueli,
-	        autopct='%1.2f%%')  # x 为基本数据，labels 为给各个部分添加标签的列表，autopct 显示各部分比例，本例中调用%1.2f%%。
+	plt.pie(x=counts, explode=a, labels=after_quchong_xueli, autopct='%1.2f%%')  # x 为基本数据，labels 为给各个部分添加标签的列表，autopct 显示各部分比例，本例中调用%1.2f%%。
 	plt.title('学历要求饼状图')  # 为饼图添加标题
 	plt.show()  # 展示图片
 	cursor.close()  # 关闭操作游标
@@ -213,7 +212,7 @@ def salary_xueli_boxplot():  # 主函数调用的salary_xueli_boxplot()函数
 		if each[1] != '' and each[1].split(',')[1] != '':  # 筛除学历的缺失值以及部分异常值
 			xueli.append(each[1].split(',')[1])
 			# 筛除薪资的缺失值
-			salary.append(each[0].split('千/月')[0])
+			salary.append(each[0].split('千')[0])
 		# print(each[1].split(',')[1],"+",each[0].split('千/月')[0])
 	# 对学历去重复值，并转换为列表形式，得到学历类型列表 xueli_after_quchong
 	xueli_after_quchong = list(set(xueli))
@@ -272,19 +271,19 @@ def post_salary():  # 主函数调用的 post_salary()函数
 	for each_result in results:
 		for i in range(9):
 			if each_result[0] in clasify[i] and each_result[1] != '':
-				if float(each_result[1].split('千/月')[0]) < 5:
+				if float(each_result[1].split('千')[0]) < 5:
 					count[i * 7] += 1
-				elif 5 <= float(each_result[1].split('千/月')[0]) < 10:
+				elif 5 <= float(each_result[1].split('千')[0]) < 10:
 					count[i * 7 + 1] += 1
-				elif 10 <= float(each_result[1].split('千/月')[0]) < 15:
+				elif 10 <= float(each_result[1].split('千')[0]) < 15:
 					count[i * 7 + 2] += 1
-				elif 15 <= float(each_result[1].split('千/月')[0]) < 20:
+				elif 15 <= float(each_result[1].split('千')[0]) < 20:
 					count[i * 7 + 3] += 1
-				elif 20 <= float(each_result[1].split('千/月')[0]) < 25:
+				elif 20 <= float(each_result[1].split('千')[0]) < 25:
 					count[i * 7 + 4] += 1
-				elif 25 <= float(each_result[1].split('千/月')[0]) < 30:
+				elif 25 <= float(each_result[1].split('千')[0]) < 30:
 					count[i * 7 + 5] += 1
-				elif 30 <= float(each_result[1].split('千/月')[0]):
+				elif 30 <= float(each_result[1].split('千')[0]):
 					count[i * 7 + 6] += 1
 	# 整理数据
 	df = pd.DataFrame({
@@ -366,11 +365,11 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 
 # 创建主函数
 if __name__ == '__main__':
-	# gangweishuliang_hist()
+	gangweishuliang_hist()
 	xueli_pie()
 	company_size()
 	gangweishuliang_heatmap()
 	salary_xueli_boxplot()
 	post_salary()
-	# wordcloud_welfare()
+	wordcloud_welfare()
 	db.close()
