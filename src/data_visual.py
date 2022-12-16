@@ -368,6 +368,78 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 	plt.show()
 
 
+def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
+	cursor = db.cursor()
+	# 从数据库表中选择这 7 种职务的薪资和名称
+	cursor.execute("SELECT `当前爬取岗位`,`薪资` FROM `after_clean` ")
+	results = cursor.fetchall()
+
+	# 薪资水平划分
+	salary = ['5 千/月以下', '5-10 千/月', '10-15 千/月', '15-20 千/月', '20-25千/月', '25-30 千/月', '30 千/月以上']
+
+	# 构建一个包含 7*9 个元素的列表，初始值为 0，用于存储职务与薪资水平的一对一岗位数量
+	count = []
+	for i in range(7 * 9):
+		count.append(0)
+	# 计算 count 列表种每个元素的值，即职务与薪资水平的一对一岗位数量
+	for each_result in results:
+		for i in range(9):
+			if each_result[0] in clasify[i] and each_result[1] != '':
+				if float(each_result[1].split('千')[0]) < 5:
+					count[i * 7] += 1
+				elif 5 <= float(each_result[1].split('千')[0]) < 10:
+					count[i * 7 + 1] += 1
+				elif 10 <= float(each_result[1].split('千')[0]) < 15:
+					count[i * 7 + 2] += 1
+				elif 15 <= float(each_result[1].split('千')[0]) < 20:
+					count[i * 7 + 3] += 1
+				elif 20 <= float(each_result[1].split('千')[0]) < 25:
+					count[i * 7 + 4] += 1
+				elif 25 <= float(each_result[1].split('千')[0]) < 30:
+					count[i * 7 + 5] += 1
+				elif 30 <= float(each_result[1].split('千')[0]):
+					count[i * 7 + 6] += 1
+	# 整理数据
+	df = pd.DataFrame({
+		'职位': post1,
+		'薪资': salary1,
+		'数量': count
+	})
+	# 把所有涉及到的节点去重规整到一起，即把“职位”列的'数据分析','产品经理', '产品助理', '交互设计', '前端开发', '软件设计', 'IOS 开发'和“薪资”
+	# 列中的'5 千/月以下','5-10 千/月','10-15 千/月','15-20 千/月','20-25 千/月','25-30 千/月','30 千/月以上'以列表内嵌套字典的形式去重汇总
+	nodes = []
+	for i in range(2):
+		values = df.iloc[:, i].unique()
+		for value in values:
+			dic = {}
+			dic['name'] = value
+			nodes.append(dic)
+	# 定义边和流量，用 Source-target-value 字典格式，能清晰描述数据的流转情况
+	linkes = []
+	for i in df.values:
+		dic = {}
+		dic['source'] = i[0]
+		dic['target'] = i[1]
+		dic['value'] = i[2]
+		linkes.append(dic)
+	# 画图
+	pic = (
+		Sankey().add(
+			'职位_薪资堆叠面积图',  # 图例名称
+			nodes,  # 传入节点数据
+			linkes,  # 传入边和流量数据
+			# 设置透明度、弯曲度
+			linestyle_opt=opts.LineStyleOpts(opacity=0.3, curve=0.5),
+			# 标签显示位置
+			label_opts=opts.LabelOpts(position='right'),
+			# 节点之间的距离
+			node_gap=30,
+		)
+		.set_global_opts(title_opts=opts.TitleOpts(title='职位_薪资堆叠面积图'))
+	)
+	pic.render('Stacked_Area.html')  # 默认保存在本代码同文件夹下
+
+
 # 创建主函数
 if __name__ == '__main__':
 	gangweishuliang_hist()
@@ -377,4 +449,5 @@ if __name__ == '__main__':
 	salary_xueli_boxplot()
 	post_salary()
 	wordcloud_welfare()
+	post_salary_stacked_area()
 	db.close()
