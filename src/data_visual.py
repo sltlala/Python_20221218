@@ -369,13 +369,13 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 	plt.show()
 
 
+# 画岗位数量与薪资之间的堆叠面积图
 def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
 	cursor = db.cursor()
-	# 从数据库表中选择这 7 种职务的薪资和名称
+	# 从数据库表中选择职务的薪资和名称
 	cursor.execute("SELECT `当前爬取岗位`,`薪资` FROM `after_clean` ")
 	results = cursor.fetchall()
-	# 根据实验课程大纲中的表格分类信息，将 30 种岗位分为九小类
-	post = ['技术管理类', '技术开发类', '业务咨询类', '技术支持类', 'IT运维类', '数据管理类', '数据运营类', '市场职能类', '产品运营类']
+	# 选取的六个岗位作图
 	T1 = '产品经理'
 	# T2 = '前端开发'
 	C1 = '需求分析'
@@ -386,15 +386,9 @@ def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
 	P1 = '网络营销'
 	# P2 = '新媒体运营'
 	clasify = [T1, C1, C2, C3, D2, P1]
-	post1 = []
-	for each_post in post:
-		for i in range(7):
-			post1.append(each_post)  # 将九小类岗位重复 7 次，放进 post1 列表中，用于后续计算数值和画图
 	# 薪资水平划分
-	salary = ['5千/月以下', '5-10千/月', '10-15千/月', '15-20千/月', '20-25千/月', '25-30  千/月', '30 千/月以上']
-	# 为了能对应九小类职务，将每种水平薪资取 7 次
-	salary1 = [[], [], [], [], [], []]
-	# 构建一个包含 7*9 个元素的列表，初始值为 0，用于存储职务与薪资水平的一对一岗位数量
+	salary = ['5千/月以下', '5-10千/月', '10-15千/月', '15-20千/月', '20-25千/月', '25-30千/月', '30 千/月以上']
+	# 构建一个包含 6 个元素的列表，初始值为 0，用于存储岗位与薪资水平的一对一岗位数量
 	count = [[], [], [], [], [], []]
 	for x in range(6):
 		for y in range(7):
@@ -416,43 +410,73 @@ def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
 					count[i][4] += 1
 				elif 25 <= s < 30:
 					count[i][5] += 1
-				elif 30 <= s[0]):
+				elif 30 <= s:
 					count[i][6] += 1
-	# 整理数据
-	df = pd.DataFrame({
-		'职位': post,
-		'薪资': salary,
-		'数量': count
-	})
-	# 把所有涉及到的节点去重规整到一起，即把“职位”列的'数据分析','产品经理', '产品助理', '交互设计', '前端开发', '软件设计', 'IOS 开发'和“薪资”
-	# 列中的'5 千/月以下','5-10 千/月','10-15 千/月','15-20 千/月','20-25 千/月','25-30 千/月','30 千/月以上'以列表内嵌套字典的形式去重汇总
-	nodes = []
-	for i in range(2):
-		values = df.iloc[:, i].unique()
-		for value in values:
-			dic = {}
-			dic['name'] = value
-			nodes.append(dic)
-	# 定义边和流量，用 Source-target-value 字典格式，能清晰描述数据的流转情况
-	linkes = []
-	for i in df.values:
-		dic = {}
-		dic['source'] = i[0]
-		dic['target'] = i[1]
-		dic['value'] = i[2]
-		linkes.append(dic)
+
+	# 计算每个薪资区间的岗位总数
+	all_count = [0, 0, 0, 0, 0, 0, 0]
+	for j in range(6):
+		for i in range(7):
+			all_count[i] += count[j][i]
+
 	# 画图
 	pic = (
 		Line()
-		.add_xaxis([]
-		)
-		.add('职位_薪资堆叠面积图',  # 图例名称
-			# 设置透明度、弯曲度
-			linestyle_opt=opts.LineStyleOpts(opacity=0.3, curve=0.5),
-			# 标签显示位置
-			label_opts=opts.LabelOpts(position='right'),
-		)
-		.set_global_opts(title_opts=opts.TitleOpts(title='职位_薪资堆叠面积图'))
+		.add_xaxis(salary)
+		.add_yaxis(T1,
+                   count[0],
+		           color='#5470c6',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+		.add_yaxis(C1,
+		           count[1],
+		           color='#91cc75',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+		.add_yaxis(C2,
+		           count[2],
+		           color='#fac858',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+		.add_yaxis(C3,
+		           count[3],
+		           color='#ee6666',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+		.add_yaxis(D2,
+		           count[4],
+		           color='#73c0de',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+		.add_yaxis(P1,
+		           count[5],
+		           color='#3ba272',
+		           stack='stack',
+		           symbol='circle',
+		           is_smooth=True,
+		           areastyle_opts=opts.AreaStyleOpts(opacity=0.4)
+		           )
+
+		.set_global_opts(title_opts=opts.TitleOpts(title='职位_薪资堆叠面积图'),
+	    xaxis_opts=opts.AxisOpts(axislabel_opts=opts.LabelOpts(rotate=-30)),  # 设置x轴标签旋转角度
+		yaxis_opts=opts.AxisOpts(name='岗位数量'),
+		                 )
+		.set_series_opts(label_opts=opts.LabelOpts(font_size=8,position='inside'))
 	)
 	pic.render('Stacked_Area.html')  # 默认保存在本代码同文件夹下
 
