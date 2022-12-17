@@ -8,7 +8,7 @@ from pyecharts.charts import Geo
 from pyecharts.globals import ChartType, SymbolType
 import numpy as np
 import pandas as pd
-from pyecharts.charts import Sankey
+from pyecharts.charts import Sankey, Line
 import jieba
 from imageio import imread
 from wordcloud import WordCloud
@@ -98,7 +98,8 @@ def xueli_pie():  # 主函数调用的 xueli_pie()函数
 			a[i] = 0.2  # 让占比小于 5%的城市突出
 	plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 	plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-	plt.pie(x=counts, explode=a, labels=after_quchong_xueli, autopct='%1.2f%%')  # x 为基本数据，labels 为给各个部分添加标签的列表，autopct 显示各部分比例，本例中调用%1.2f%%。
+	# x 为基本数据，labels 为给各个部分添加标签的列表，autopct 显示各部分比例，本例中调用%1.2f%%。
+	plt.pie(x=counts, explode=a, labels=after_quchong_xueli, autopct='%1.2f%%')
 	plt.title('学历要求饼状图')  # 为饼图添加标题
 	plt.savefig(r'./学历要求饼状图.png')
 	plt.show()  # 展示图片
@@ -264,7 +265,7 @@ def post_salary():  # 主函数调用的 post_salary()函数
 		for i in range(7):
 			post1.append(each_post)  # 将九小类岗位重复 7 次，放进 post1 列表中，用于后续计算数值和画图
 	# 薪资水平划分
-	salary = ['5 千/月以下', '5-10 千/月', '10-15 千/月', '15-20 千/月', '20-25千/月', '25-30 千/月', '30 千/月以上']
+	salary = ['5千/月以下', '5-10千/月', '10-15千/月', '15-20千/月', '20-25千/月', '25-30  千/月', '30 千/月以上']
 	# 为了能对应九小类职务，将每种水平薪资取 7 次
 	salary1 = salary * 9
 	# 构建一个包含 7*9 个元素的列表，初始值为 0，用于存储职务与薪资水平的一对一岗位数量
@@ -373,36 +374,54 @@ def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
 	# 从数据库表中选择这 7 种职务的薪资和名称
 	cursor.execute("SELECT `当前爬取岗位`,`薪资` FROM `after_clean` ")
 	results = cursor.fetchall()
-
+	# 根据实验课程大纲中的表格分类信息，将 30 种岗位分为九小类
+	post = ['技术管理类', '技术开发类', '业务咨询类', '技术支持类', 'IT运维类', '数据管理类', '数据运营类', '市场职能类', '产品运营类']
+	T1 = '产品经理'
+	# T2 = '前端开发'
+	C1 = '需求分析'
+	C2 = 'ERP实施'
+	C3 = 'IT项目经理'
+	# D1 = '数据挖掘'
+	D2 = '数据分析'
+	P1 = '网络营销'
+	# P2 = '新媒体运营'
+	clasify = [T1, C1, C2, C3, D2, P1]
+	post1 = []
+	for each_post in post:
+		for i in range(7):
+			post1.append(each_post)  # 将九小类岗位重复 7 次，放进 post1 列表中，用于后续计算数值和画图
 	# 薪资水平划分
-	salary = ['5 千/月以下', '5-10 千/月', '10-15 千/月', '15-20 千/月', '20-25千/月', '25-30 千/月', '30 千/月以上']
-
+	salary = ['5千/月以下', '5-10千/月', '10-15千/月', '15-20千/月', '20-25千/月', '25-30  千/月', '30 千/月以上']
+	# 为了能对应九小类职务，将每种水平薪资取 7 次
+	salary1 = [[], [], [], [], [], []]
 	# 构建一个包含 7*9 个元素的列表，初始值为 0，用于存储职务与薪资水平的一对一岗位数量
-	count = []
-	for i in range(7 * 9):
-		count.append(0)
+	count = [[], [], [], [], [], []]
+	for x in range(6):
+		for y in range(7):
+			count[x].append(0)
 	# 计算 count 列表种每个元素的值，即职务与薪资水平的一对一岗位数量
 	for each_result in results:
-		for i in range(9):
-			if each_result[0] in clasify[i] and each_result[1] != '':
-				if float(each_result[1].split('千')[0]) < 5:
-					count[i * 7] += 1
-				elif 5 <= float(each_result[1].split('千')[0]) < 10:
-					count[i * 7 + 1] += 1
-				elif 10 <= float(each_result[1].split('千')[0]) < 15:
-					count[i * 7 + 2] += 1
-				elif 15 <= float(each_result[1].split('千')[0]) < 20:
-					count[i * 7 + 3] += 1
-				elif 20 <= float(each_result[1].split('千')[0]) < 25:
-					count[i * 7 + 4] += 1
-				elif 25 <= float(each_result[1].split('千')[0]) < 30:
-					count[i * 7 + 5] += 1
-				elif 30 <= float(each_result[1].split('千')[0]):
-					count[i * 7 + 6] += 1
+		for i in range(6):
+			if each_result[0] == clasify[i] and each_result[1] != '':
+				s = float(each_result[1].split('千')[0])
+				if s < 5:
+					count[i][0] += 1
+				elif 5 <= s < 10:
+					count[i][1] += 1
+				elif 10 <= s < 15:
+					count[i][2] += 1
+				elif 15 <= s < 20:
+					count[i][3] += 1
+				elif 20 <= s < 25:
+					count[i][4] += 1
+				elif 25 <= s < 30:
+					count[i][5] += 1
+				elif 30 <= s[0]):
+					count[i][6] += 1
 	# 整理数据
 	df = pd.DataFrame({
-		'职位': post1,
-		'薪资': salary1,
+		'职位': post,
+		'薪资': salary,
 		'数量': count
 	})
 	# 把所有涉及到的节点去重规整到一起，即把“职位”列的'数据分析','产品经理', '产品助理', '交互设计', '前端开发', '软件设计', 'IOS 开发'和“薪资”
@@ -424,16 +443,14 @@ def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
 		linkes.append(dic)
 	# 画图
 	pic = (
-		Sankey().add(
-			'职位_薪资堆叠面积图',  # 图例名称
-			nodes,  # 传入节点数据
-			linkes,  # 传入边和流量数据
+		Line()
+		.add_xaxis([]
+		)
+		.add('职位_薪资堆叠面积图',  # 图例名称
 			# 设置透明度、弯曲度
 			linestyle_opt=opts.LineStyleOpts(opacity=0.3, curve=0.5),
 			# 标签显示位置
 			label_opts=opts.LabelOpts(position='right'),
-			# 节点之间的距离
-			node_gap=30,
 		)
 		.set_global_opts(title_opts=opts.TitleOpts(title='职位_薪资堆叠面积图'))
 	)
