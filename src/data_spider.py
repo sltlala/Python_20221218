@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 import pymysql
 import random
 
-# import lxml
 # 定义 jiexi()函数，用于解析得到的 html
 def jiexi(html, info, name):
 	# print(html)
@@ -95,7 +94,6 @@ def save(data):
 		db.commit()  # 提交数据库
 	cursor.close()  # 关闭游标
 	db.close()  # 关闭数据库
-
 
 if __name__ == '__main__':  # 主函数
 	# searchword = input('请输入你想查询的岗位：') # 自行输入 30 个岗位名称搜索
