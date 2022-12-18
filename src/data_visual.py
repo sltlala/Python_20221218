@@ -370,7 +370,7 @@ def wordcloud_welfare():  # 主函数调用的 wordcloud_welfare()函数
 
 
 # 画岗位数量与薪资之间的堆叠面积图
-def post_salary_stacked_area():  # 主函数调用的 post_salary()函数
+def post_salary_stacked_area():
 	cursor = db.cursor()
 	# 从数据库表中选择职务的薪资和名称
 	cursor.execute("SELECT `当前爬取岗位`,`薪资` FROM `after_clean` ")
